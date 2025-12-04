@@ -30,15 +30,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String requestPath = request.getRequestURI();
+        String method = request.getMethod();
 
         // Skip JWT processing for OPTIONS requests (CORS preflight)
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+        if ("OPTIONS".equalsIgnoreCase(method)) {
             filterChain.doFilter(request, response);
             return;
         }
 
         // Skip JWT processing for public endpoints - let them pass through without authentication
         if (isPublicEndpoint(requestPath)) {
+            // Log for debugging (remove in production if needed)
+            System.out.println("JwtAuthenticationFilter: Allowing public endpoint: " + method + " " + requestPath);
             filterChain.doFilter(request, response);
             return;
         }
@@ -72,20 +75,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicEndpoint(String path) {
+        if (path == null) {
+            return false;
+        }
+        
+        // Normalize path (remove trailing slash for consistent matching)
+        String normalizedPath = path.endsWith("/") && path.length() > 1 ? path.substring(0, path.length() - 1) : path;
+        
         // Public endpoints that don't require authentication
         // Exclude change-password from public endpoints (it requires authentication)
-        if (path.startsWith("/api/auth/")) {
+        if (normalizedPath.startsWith("/api/auth/")) {
             // change-password requires authentication, so don't skip JWT processing
-            if (path.equals("/api/auth/change-password")) {
+            if (normalizedPath.equals("/api/auth/change-password")) {
                 return false;
             }
             return true;
         }
-        // Other public endpoints
-        return path.startsWith("/api/blogs/public/") ||
-               path.startsWith("/api/newsletter/subscribe") ||
-               path.startsWith("/api/contact") ||
+        
+        // Other public endpoints - check exact matches and prefixes
+        return normalizedPath.startsWith("/api/blogs/public/") ||
+               normalizedPath.equals("/api/blogs/public") ||
+               normalizedPath.startsWith("/api/newsletter/subscribe") ||
+               normalizedPath.startsWith("/api/contact") ||
                // Only allow /api/bookings (POST for public bookings), NOT /api/bookings/admin/**
-               (path.equals("/api/bookings") || (path.startsWith("/api/bookings/") && !path.startsWith("/api/bookings/admin/")));
+               (normalizedPath.equals("/api/bookings") || 
+                (normalizedPath.startsWith("/api/bookings/") && !normalizedPath.startsWith("/api/bookings/admin/")));
     }
 }

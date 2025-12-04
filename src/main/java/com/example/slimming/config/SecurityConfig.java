@@ -70,8 +70,11 @@ public class SecurityConfig {
                     // ✅ Allow OPTIONS requests for CORS preflight - MUST be first
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     // ✅ Public Endpoints - Must be defined BEFORE protected endpoints (order matters!)
-                    // Public blog endpoints - ALL methods allowed
+                    // Public blog endpoints - Match all variations
                     .requestMatchers("/api/blogs/public/**").permitAll()
+                    .requestMatchers("/api/blogs/public/*").permitAll()
+                    .requestMatchers("/api/blogs/public/all").permitAll()
+                    .requestMatchers("/api/blogs/public/featured").permitAll()
                     .requestMatchers(HttpMethod.GET, "/api/blogs/public/**").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/blogs/public/**").permitAll()
                     .requestMatchers(HttpMethod.PUT, "/api/blogs/public/**").permitAll()
