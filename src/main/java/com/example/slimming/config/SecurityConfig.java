@@ -69,22 +69,20 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                     // ✅ Allow OPTIONS requests for CORS preflight - MUST be first
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    // ✅ Protected Auth Endpoints (must come BEFORE permitAll for /api/auth/**)
-                    .requestMatchers(HttpMethod.POST, "/api/auth/change-password").hasRole("ADMIN")
-                    // ✅ Public Endpoints - Must be defined first (order matters!)
-                    // Explicitly allow all HTTP methods for public endpoints
+                    // ✅ Public Endpoints - Must be defined BEFORE protected endpoints (order matters!)
+                    // Auth endpoints (except change-password)
+                    .requestMatchers("/api/auth/login").permitAll()
                     .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/auth/**").permitAll()
+                    // Public blog endpoints
                     .requestMatchers("/api/blogs/public/**").permitAll()
-                    .requestMatchers(HttpMethod.GET, "/api/blogs/public/**").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/blogs/public/**").permitAll()
+                    // Public booking endpoint
                     .requestMatchers("/api/bookings").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
+                    // Newsletter subscription
                     .requestMatchers("/api/newsletter/subscribe").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/newsletter/subscribe").permitAll()
+                    // Contact form
                     .requestMatchers("/api/contact").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
+                    // ✅ Protected Auth Endpoints (must come AFTER general permitAll)
+                    .requestMatchers(HttpMethod.POST, "/api/auth/change-password").hasRole("ADMIN")
                     // ✅ Admin Protected Endpoints
                     .requestMatchers("/api/blogs/admin/**").hasRole("ADMIN")
                     .requestMatchers("/api/bookings/admin/**").hasRole("ADMIN")
@@ -93,7 +91,6 @@ public class SecurityConfig {
                     // ✅ Default: Authentication required
                     .anyRequest().authenticated()
             )
-            // ✅ Allow anonymous access for public endpoints (default is enabled)
             // ✅ Handle unauthorized (401) and forbidden (403) access - ensure CORS headers are included
             .exceptionHandling(ex -> ex
                     .authenticationEntryPoint(jwtAuthenticationEntryPoint)

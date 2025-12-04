@@ -84,6 +84,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Other public endpoints
         return path.startsWith("/api/blogs/public/") ||
                path.startsWith("/api/newsletter/subscribe") ||
+               path.startsWith("/api/contact") ||
                // Only allow /api/bookings (POST for public bookings), NOT /api/bookings/admin/**
                (path.equals("/api/bookings") || (path.startsWith("/api/bookings/") && !path.startsWith("/api/bookings/admin/")));
     }
