@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/newsletter")
-@CrossOrigin(origins = {"https://lumiereluxe.in", "https://www.lumiereluxe.in", "http://localhost:3000", "http://localhost:3001", "http://localhost:5173"})
+@CrossOrigin(origins = {"https://sashaslimming.com", "https://www.sashaslimming.com", "http://localhost:3000", "http://localhost:3001", "http://localhost:5173"})
 public class NewsletterController {
 
     @Autowired

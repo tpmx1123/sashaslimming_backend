@@ -111,9 +111,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:3000",       // React default port
-                "http://localhost:3001",       // Alternative React port
-                "http://localhost:5173"       // ✅ Non-www version
+                "https://sashaslimming.com",      // Production
+                "https://www.sashaslimming.com",  // Production with www
+                "http://localhost:3000",          // React default port (dev)
+                "http://localhost:3001",          // Alternative React port (dev)
+                "http://localhost:5173"           // Vite dev server (dev)
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("*"));

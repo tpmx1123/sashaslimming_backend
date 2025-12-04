@@ -18,7 +18,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         // Add CORS headers to 403 error response only if not already set by Spring Security CORS
         // This prevents duplicate headers
         String origin = request.getHeader("Origin");
-        if (origin != null && (origin.contains("lumiereluxe.in") || origin.contains("localhost"))) {
+        if (origin != null && (origin.contains("sashaslimming.com") || origin.contains("localhost"))) {
             // Only set headers if they don't already exist (Spring Security CORS may have set them)
             if (response.getHeader("Access-Control-Allow-Origin") == null) {
                 response.setHeader("Access-Control-Allow-Origin", origin);
