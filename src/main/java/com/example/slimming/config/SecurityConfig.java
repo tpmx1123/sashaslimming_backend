@@ -70,17 +70,25 @@ public class SecurityConfig {
                     // ✅ Allow OPTIONS requests for CORS preflight - MUST be first
                     .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     // ✅ Public Endpoints - Must be defined BEFORE protected endpoints (order matters!)
-                    // Auth endpoints (except change-password)
-                    .requestMatchers("/api/auth/login").permitAll()
-                    .requestMatchers("/api/auth/**").permitAll()
-                    // Public blog endpoints
+                    // Public blog endpoints - ALL methods allowed
                     .requestMatchers("/api/blogs/public/**").permitAll()
+                    .requestMatchers(HttpMethod.GET, "/api/blogs/public/**").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/blogs/public/**").permitAll()
+                    .requestMatchers(HttpMethod.PUT, "/api/blogs/public/**").permitAll()
+                    .requestMatchers(HttpMethod.DELETE, "/api/blogs/public/**").permitAll()
+                    // Auth endpoints (except change-password) - ALL methods allowed
+                    .requestMatchers("/api/auth/login").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                    .requestMatchers("/api/auth/**").permitAll()
                     // Public booking endpoint
                     .requestMatchers("/api/bookings").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/bookings").permitAll()
                     // Newsletter subscription
                     .requestMatchers("/api/newsletter/subscribe").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/newsletter/subscribe").permitAll()
                     // Contact form
                     .requestMatchers("/api/contact").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
                     // ✅ Protected Auth Endpoints (must come AFTER general permitAll)
                     .requestMatchers(HttpMethod.POST, "/api/auth/change-password").hasRole("ADMIN")
                     // ✅ Admin Protected Endpoints
