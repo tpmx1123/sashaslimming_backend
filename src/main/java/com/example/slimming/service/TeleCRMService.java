@@ -72,7 +72,7 @@ public class TeleCRMService {
             }
             
             // Set lead source to match TeleCRM dropdown value
-            fields.put("lead_source", "lumiereluxeweb");
+            fields.put("lead_source", "sashaslimmingweb");
             
             // Add service name to CLIENT CONCERNS field
             // Note: If TeleCRM shows "N/A", the field name or value might not match exactly
@@ -206,28 +206,14 @@ public class TeleCRMService {
         // 3. Update the mappings below to match exactly
         Map<String, String> serviceMapping = new HashMap<>();
         
-        // Hair Services
-        serviceMapping.put("hair-cut", "Salon-Hair Cut");
-        serviceMapping.put("hair-colour", "Salon-Hair Colour");
-        serviceMapping.put("hair-styling", "Salon-Hair Styling");
-        serviceMapping.put("hair-treatment", "Salon-Hair Treatment");
-        serviceMapping.put("hair-care-rituals", "Salon-Hair Care Rituals");
-        serviceMapping.put("hair-extensions", "Salon-Hair Extensions");
-        
-        // Makeup Services
-        serviceMapping.put("light-party-makeup", "Salon-Light & Party Makeup");
-        serviceMapping.put("bridal-groom-makeup", "Salon-Bridal & Groom Makeup");
-        serviceMapping.put("hair-updos-saree-draping", "Salon-Hair Updos & Saree Draping");
-        
-        // Nail Services
-        serviceMapping.put("nail-artistry", "Salon-Nail Artistry");
-            serviceMapping.put("manicure-pedicure", "Salon-Manicure & Pedicure");
-        serviceMapping.put("luxury-extensions", "Salon-Luxury Extensions");
-        
-        // Skin & Body Services
-        serviceMapping.put("threading-waxing", "Salon-Threading & Waxing");
-        serviceMapping.put("bleach-detain", "Salon-Bleach & De-Tan");
-        serviceMapping.put("cleanup-facials", "Salon-Clean-Up & Facials");
+        // Slimming Services - Using "slimming-" prefix as requested
+        // Format: "slimming-Consultation", "slimming-fat-reduction", etc.
+        serviceMapping.put("consultation", "slimming-Consultation");
+        serviceMapping.put("fat-reduction", "slimming-fat-reduction");
+        serviceMapping.put("inch-loss", "slimming-inch-loss");
+        serviceMapping.put("muscle-toning", "slimming-muscle-toning");
+        serviceMapping.put("skin-tightening", "slimming-skin-tightening");
+        serviceMapping.put("surgical-sculpting", "slimming-surgical-sculpting");
         
         // Return mapped value, or format as fallback
         String mappedValue = serviceMapping.get(serviceName.toLowerCase().trim());

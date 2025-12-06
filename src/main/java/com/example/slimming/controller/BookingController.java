@@ -3,6 +3,7 @@ package com.example.slimming.controller;
 import com.example.slimming.entity.Booking;
 import com.example.slimming.repository.BookingRepository;
 import com.example.slimming.service.EmailService;
+import com.example.slimming.service.TeleCRMService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,8 @@ public class BookingController {
     @Autowired
     private EmailService emailService;
 
-   
+    @Autowired
+    private TeleCRMService teleCRMService;
 
     // Public endpoint - Anyone can submit a booking
     @PostMapping
@@ -37,7 +39,13 @@ public class BookingController {
             // Don't fail the booking if email fails - booking is already saved
         }
         
-      
+        // Send lead to TeleCRM (fire-and-forget)
+        try {
+            teleCRMService.createLead(savedBooking);
+        } catch (Exception e) {
+            System.err.println("Failed to send lead to TeleCRM: " + e.getMessage());
+            // Don't fail the booking if TeleCRM fails - booking is already saved
+        }
         
         return ResponseEntity.ok(savedBooking);
     }
