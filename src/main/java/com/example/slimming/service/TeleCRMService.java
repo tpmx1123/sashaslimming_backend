@@ -72,7 +72,13 @@ public class TeleCRMService {
             }
             
             // Set lead source to match TeleCRM dropdown value
-            fields.put("lead_source", "sashaslimmingweb");
+            // Try multiple field name variations to ensure it works
+            // TeleCRM might use different field names: lead_source, leadSource, source, lead_source_name
+            String leadSourceValue = "sashaslimmingweb";
+            fields.put("lead_source", leadSourceValue);  // snake_case (most common)
+            fields.put("leadSource", leadSourceValue);   // camelCase (alternative)
+            fields.put("source", leadSourceValue);       // simple name (alternative)
+            System.out.println("🔵 TeleCRM Lead Source value: " + leadSourceValue);
             
             // Add service name to CLIENT CONCERNS field
             // Note: If TeleCRM shows "N/A", the field name or value might not match exactly
